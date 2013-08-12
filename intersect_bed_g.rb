@@ -17,7 +17,13 @@ end
 
 @e = (@wb ? -1 : @a_ncol-1)
 unless @v #intersect
-  print `bedtools intersect #{@sorted} -loj -a #{@a} -b #{@b} | ruby -ane 'puts $F[0..#{@e}].join("\t") if $F[#{@a_ncol}] != "." and $F[3] == $F[#{@a_ncol}+3] and $F[4] == $F[#{@a_ncol}+4]'`
+  @command = "bedtools intersect #{@sorted} -loj -a #{@a} -b #{@b} | ruby -ane 'puts $F[0..#{@e}].join(\"\t\") if $F[#{@a_ncol}] != \".\" and $F[3] == $F[#{@a_ncol}+3] and $F[4] == $F[#{@a_ncol}+4]'"
 else
-  print `bedtools intersect #{@sorted} -loj -a #{@a} -b #{@b} | ruby -ane 'puts $F[0..#{@e}].join("\t") if $F[#{@a_ncol}] == "." or $F[3] != $F[#{@a_ncol}+3] or $F[4] != $F[#{@a_ncol}+4]'`
+  @command = "bedtools intersect #{@sorted} -loj -a #{@a} -b #{@b} | ruby -ane 'puts $F[0..#{@e}].join(\"\t\") if $F[#{@a_ncol}] == \".\" or $F[3] != $F[#{@a_ncol}+3] or $F[4] != $F[#{@a_ncol}+4]'"
 end
+
+IO.popen(@command) { |f|
+  until f.eof?
+    puts f.gets
+  end
+}

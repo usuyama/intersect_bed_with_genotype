@@ -8,7 +8,7 @@ opt.on('-a A.bed') {|v| @a = v }
 opt.on('-b B.bed') {|v| @b = v }
 opt.on('-v') {|v| @v = v }
 opt.on('-wb') {|v| @wb = v }
-opt.on('-sorted') {|v| @sorted = v ? "-sorted" : ""
+opt.on('-sorted') {|v| @sorted = v ? "-sorted" : "" }
 argv = opt.parse(ARGV)
 
 open("#{@a}") do |f|
